@@ -5,7 +5,7 @@ const {User} = require('../../models');
 router.get('/', (req, res) => {
     // Use findAll() method
     User.findAll({
-        attributes: {exclude: ['password']} // dont show the passwords column
+        //attributes: {exclude: ['password']} // dont show the passwords column
     }) // SELECT * FROM users;
         .then(dbUserData => res.json(dbUserData))
         .catch(err => {
@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 // GET /api/users/1
 router.get('/:id', (req, res) => {
     User.findOne({ //SELECT * FROM users WHERE id = 1
-        attributes: {exclude: ['password']}, // dont show the passwords column
+        //attributes: {exclude: ['password']}, // dont show the passwords column
         where: {
             id: req.params.id
         }
@@ -58,6 +58,7 @@ router.put('/:id', (req, res) => {
     SET username = "Lernantino", email = "lernantino@gmail.com", password = "newPassword1234"
     WHERE id = 1; */
     User.update(req.body, {
+        individualHooks: true, // calls for when changing one record at a time
         where: {
             id: req.params.id
         }
