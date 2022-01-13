@@ -58,7 +58,7 @@ User.init( // initialize the model's data config
     },
     sequelize, // Import the sequelize connection
     timestamps: false, // dont create createdAt/updatedAt timestamp fields
-    freezeTableName: false, // don't pluralize the databae table name
+    freezeTableName: true, // don't pluralize the databae table name
     underscored: true, // user underscore instead of camel case
     modelName: 'user',
   },

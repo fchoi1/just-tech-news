@@ -12,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(routes);
 
 // connect to mysql server, sync means taking config and connecting to associted database tables, creates on if not found
-// force means to recreated all of the tables on startup
-sequalize.sync({force: false}).then( () => {
+// force means to recreated all of the tables on startup if there are changes
+sequalize.sync({force: true}).then( () => {
     app.listen(PORT, () => console.log(`Now listening on port: ${PORT}`));
 });
