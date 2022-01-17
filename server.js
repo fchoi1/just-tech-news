@@ -1,14 +1,22 @@
 /* eslint-disable no-console */
 /* eslint-disable max-len */
 const express = require('express');
-const routes = require('./routes');
+const path = require('path');
+const exphbs = require('express-handlebars');
+const routes = require('./controllers');
 const sequalize = require('./config/connection');
+
+const hbs = exphbs.create({}); // Setup handlebars
 
 const app = express();
 const PORT = process.env.PROT || 3001;
 
+app.engine('handlebars', hbs.engine);
+app.set('view engine', 'handlebars');
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Turn on routes, all done in the routes directory
 app.use(routes);
