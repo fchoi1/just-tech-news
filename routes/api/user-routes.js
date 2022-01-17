@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User } = require('../../models');
+const { User, Post, Vote } = require('../../models');
 
 // GET /api/users
 router.get('/', (req, res) => {
@@ -9,7 +9,6 @@ router.get('/', (req, res) => {
   }) // SELECT * FROM users;
     .then((dbUserData) => res.json(dbUserData))
     .catch((err) => {
-      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -21,11 +20,20 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id,
     },
+    include: [{
+      model: Post,
+      attributes: ['id', 'title', 'post_url', 'created_at',]
+    }, {
+      model: Post,
+      attributes: ['title'],
+      through: Vote,
+      as: 'voted_posts',
+    }
+    ],
   }).then((dbUserData) => {
     !dbUserData ? res.status(404).json({ message: 'No user found with this id' })
       : res.json(dbUserData);
   }).catch((err) => {
-    console.log(err);
     res.status(500).json(err);
   });
 });
@@ -42,7 +50,6 @@ router.post('/', (req, res) => {
     password: req.body.password,
   }).then((dbUserData) => res.json(dbUserData))
     .catch((err) => {
-      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -67,7 +74,6 @@ router.post('/seed', (req, res) => {
     password: 'password3',
   }]).then((dbUserData) => res.json(dbUserData))
     .catch((err) => {
-      console.log(err);
       res.status(500).json(err);
     });
 });
@@ -109,7 +115,6 @@ router.put('/:id', (req, res) => {
     !dbUserData ? res.status(404).json({ message: 'No user found with this id' })
       : res.json(dbUserData);
   }).catch((err) => {
-    console.log(err);
     res.status(500).json(err);
   });
 });
@@ -124,7 +129,6 @@ router.delete('/:id', (req, res) => {
     !dbUserData ? res.status(404).json({ message: 'No user found with this id' })
       : res.json(dbUserData);
   }).catch((err) => {
-    console.log(err);
     res.status(500).json(err);
   });
 });
