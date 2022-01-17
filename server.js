@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+/* eslint-disable max-len */
 const express = require('express');
 const routes = require('./routes');
 const sequalize = require('./config/connection');

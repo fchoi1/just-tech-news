@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const router = require('express').Router();
 const { Post, User, Vote } = require('../../models');
 const sequelize = require('../../config/connection');
