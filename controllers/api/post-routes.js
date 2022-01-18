@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 const router = require('express').Router();
-const { Post, User, Vote } = require('../../models');
+const {
+  Post, User, Vote, Comment,
+} = require('../../models');
 const sequelize = require('../../config/connection');
 
 // GET /api/posts
@@ -15,8 +17,15 @@ router.get('/', (req, res) => {
     order: [['created_at', 'DESC']],
     // JOIN command
     include: [{
+      model: Comment,
+      attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+      // Nested Join command for comments
+      include: {
+        model: User,
+        attributes: ['username'],
+      },
+    }, {
       model: User,
-      // Select username column from User table
       attributes: ['username'],
     }],
   }).then((dbPostData) => res.json(dbPostData))
@@ -34,7 +43,15 @@ router.get('/:id', (req, res) => {
     attributes: ['id', 'post_url', 'title', 'created_at',
       [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count'],
     ],
-    include: [{ model: User, attributes: ['username'] }],
+    include: [{
+      model: Comment,
+      attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
+      include: {
+        model: User,
+        attributes: ['username'],
+      },
+    },
+    { model: User, attributes: ['username'] }],
   }).then((dbPostData) => (!dbPostData ? res.status(404).json({ message: 'No post found with this id' }) : res.json(dbPostData)))
     .catch((err) => {
       res.status(500).json(err);
