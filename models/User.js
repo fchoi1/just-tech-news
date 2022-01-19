@@ -47,6 +47,13 @@ User.init( // initialize the model's data config
     // TABLE CONFIGURATION OPTIONS GO HERE
     // hooks are lifecycle events to call before or after sequalize events
     hooks: {
+      async beforeBulkCreate(newUserDataList) {
+        const dataList = await Promise.all(newUserDataList.map( async (newUserData) => {
+          newUserData.password = await bcrypt.hash(newUserData.password, 10);
+          return newUserData;
+        }));
+        return dataList;
+      },
       // set up beforeCreate lifecycle "hook" functionality
       async beforeCreate(newUserData) {
         // eslint-disable-next-line no-param-reassign
