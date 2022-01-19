@@ -12,7 +12,12 @@ router.get('/', (req, res) => {
       'post_url',
       'title',
       'created_at',
-      [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count'],
+      [
+        sequelize.literal(
+          '(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'
+        ),
+        'vote_count'
+      ]
     ],
     include: [
       {
@@ -20,13 +25,14 @@ router.get('/', (req, res) => {
         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
         include: {
           model: User,
-          attributes: ['username'],
-        },
-      }, {
-        model: User,
-        attributes: ['username'],
+          attributes: ['username']
+        }
       },
-    ],
+      {
+        model: User,
+        attributes: ['username']
+      }
+    ]
   })
     .then((dbPostData) => {
       // pass a single post object into the homepage template
@@ -49,5 +55,5 @@ router.get('/login', (req, res) => {
     return;
   }
   res.render('login');
-})
+});
 module.exports = router;
