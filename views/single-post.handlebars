@@ -14,27 +14,33 @@
   </div>
 </article>
 
-<form class="comment-form">
-    <div> 
-        <textarea name="comment-body"></textarea>
+{{#if loggedIn}}
+  <form class='comment-form'>
+    <div>
+      <textarea name='comment-body'></textarea>
     </div>
     <div>
-        <button type="submit">add comment</button>
-        <button type="button" class="upvote-btn">upvote</button>
+      <button type='submit'>add comment</button>
+      <button type='button' class='upvote-btn'>upvote</button>
     </div>
-</form>
-
-<div class="comments"> 
-    {{#each post.Comments}}
-    <section class="comment"> 
-        <div class="meta">
-            {{user.username}} on {{created_at}}
-        </div>
-        <div class="text">
-            {{comment_text}}
-        </div>
+  </form>
+{{/if}}
+<div class='comments'>
+  {{#each post.Comments}}
+    <section class='comment'>
+      <div class='meta'>
+        {{user.username}}
+        on
+        {{created_at}}
+      </div>
+      <div class='text'>
+        {{comment_text}}
+      </div>
     </section>
-    {{/each}}
+  {{/each}}
 </div>
-<script src="/javascript/comment.js"></script>
-<script src="/javascript/upvote.js"></script>
+
+{{#if loggedIn}}
+<script src='/javascript/comment.js'></script>
+<script src='/javascript/upvote.js'></script>
+{{/if}}

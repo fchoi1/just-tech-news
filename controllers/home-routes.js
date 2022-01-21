@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       // console.log(dbPostData[0].get({plain: true}));
       // Return only the plain information
       const posts = dbPostData.map((post) => post.get({ plain: true }));
-      res.render('homepage', { posts });
+      res.render('homepage', { posts, loggedIn: req.session.loggedIn });
     })
     .catch((err) => {
       console.log(err);
@@ -83,7 +83,7 @@ router.get('/post/:id', async (req, res) => {
     }
     // serialize the data to plain
     const post = dbPostData.get({ plain: true });
-    res.render('single-post', { post });
+    res.render('single-post', { post, loggedIn: req.session.loggedIn});
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
