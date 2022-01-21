@@ -15,8 +15,8 @@ async function signupFormHandler(event) {
       }),
       headers: { 'Content-Type': 'application/json' }
     });
-    // Check response
-    response.ok ? console.log('success') : alert(response.statusText);
+    // Check response and redirect if sucess
+    response.ok ? document.location.replace('/') : alert(response.statusText);
   }
 }
 
@@ -35,7 +35,7 @@ async function loginFormHandler(event) {
       headers: { 'Content-Type': 'application/json' }
     });
     // Check response
-    response.ok ? console.log('success') : alert(response.statusText);
+    response.ok ? document.location.replace('/') : alert(response.statusText);
   }
 }
 
