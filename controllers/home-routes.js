@@ -4,6 +4,7 @@ const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
 
 // From ORM
+// GET /
 router.get('/', (req, res) => {
   console.log(req.session);
   Post.findAll({
@@ -23,15 +24,9 @@ router.get('/', (req, res) => {
       {
         model: Comment,
         attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at'],
-        include: {
-          model: User,
-          attributes: ['username']
-        }
+        include: { model: User, attributes: ['username'] }
       },
-      {
-        model: User,
-        attributes: ['username']
-      }
+      { model: User, attributes: ['username'] }
     ]
   })
     .then((dbPostData) => {
@@ -48,6 +43,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// GET /login
 router.get('/login', (req, res) => {
   // Check for login session
   if (req.session.loggedIn) {
@@ -55,5 +51,42 @@ router.get('/login', (req, res) => {
     return;
   }
   res.render('login');
+});
+
+// GET /post/id
+router.get('/post/:id', async (req, res) => {
+  try {
+    const dbPostData = await Post.findOne({
+      where: { id: req.params.id },
+      attributes: [
+        'id',
+        'post_url',
+        'title',
+        'created_at',
+        // prettier-ignore
+        [ sequelize.literal(
+          '(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'),
+        'vote_count' ]
+      ],
+      // prettier-ignore
+      include: [{
+        model: Comment,
+        attributes: ['id', 'comment_text', 'post_id', 'user_id', 'created_at']
+      }, {
+        model: User,
+        attributes: ['username']
+      }]
+    });
+    if (!dbPostData) {
+      res.status(404).json({ message: 'No post found with id' });
+      return;
+    }
+    // serialize the data to plain
+    const post = dbPostData.get({ plain: true });
+    res.render('single-post', { post });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 });
 module.exports = router;

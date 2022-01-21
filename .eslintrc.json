@@ -1,6 +1,7 @@
 {
   "extends": ["prettier"],
   "root": true,
+  "parser": "@babel/eslint-parser",
   "env": {
     "browser": true,
     "commonjs": true,
@@ -32,6 +33,7 @@
     "indent": ["error", 2],
     "quotes": ["error", "single"],
     "semi": ["error", "always"],
-    "radix": "off"
+    "radix": "off",
+    "rest-spread-spacing": ["error", "never"]
   }
 }

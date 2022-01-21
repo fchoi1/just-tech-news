@@ -68,8 +68,8 @@ router.post('/', (req, res) => {
     .then((dbUserData) => {
       // Accessing and saving session information in db, then runs callback
       req.session.save(() => {
-        req.session.id = dbUserData.id;
-        req.session.user_id = dbUserData.username;
+        req.session.user_id = dbUserData.id;
+        req.session.username = dbUserData.username;
         req.session.loggedIn = true;
         res.json(dbUserData);
       });
@@ -129,8 +129,8 @@ router.post('/login', (req, res) => {
     }
     // Save session into db
     req.session.save(() => {
-      req.session.id = dbUserData.id;
-      req.session.user_id = dbUserData.username;
+      req.session.user_id = dbUserData.id;
+      req.session.username = dbUserData.username;
       req.session.loggedIn = true;
       res.json({ user: dbUserData, message: 'You are now logged in' });
     });
