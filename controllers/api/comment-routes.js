@@ -26,28 +26,7 @@ router.post('/', (req, res) => {
 });
 
 router.post('/seed', (req, res) => {
-  Comment.bulkCreate([
-    {
-      comment_text: 'Comment 1 here',
-      user_id: 1,
-      post_id: 2
-    },
-    {
-      comment_text: 'Comment 2 here',
-      user_id: 1,
-      post_id: 1
-    },
-    {
-      comment_text: 'Comment 4 here',
-      user_id: 2,
-      post_id: 3
-    },
-    {
-      comment_text: 'Comment 4 here',
-      user_id: 1,
-      post_id: 1
-    }
-  ])
+  Comment.bulkCreate()
     .then((dbCommentData) => res.json(dbCommentData))
     .catch((err) => {
       res.status(500).json(err);

@@ -79,35 +79,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// POST /api/users/seed
-router.post('/seed', (req, res) => {
-  // Expects req body {username: 'Lernantino', email: 'lernantino@gmail.com', password: 'password1234'}
-
-  /* INSERT INTO users  (username, email, password)
-    VALUES ("Lernantino", "lernantino@gmail.com", "password1234"); */
-  User.bulkCreate([
-    {
-      username: 'person1',
-      email: 'person1@email.com',
-      password: 'password1'
-    },
-    {
-      username: 'person2',
-      email: 'person2@email.com',
-      password: 'password2'
-    },
-    {
-      username: 'person3',
-      email: 'person3@email.com',
-      password: 'password3'
-    }
-  ])
-    .then((dbUserData) => res.json(dbUserData))
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-});
-
 // POST /api/users/login
 router.post('/login', (req, res) => {
   // expects {email: 'lernantino@gmail.com', password: 'password1234'}

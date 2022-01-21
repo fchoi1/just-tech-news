@@ -90,31 +90,6 @@ router.post('/', (req, res) => {
     });
 });
 
-// POST /api/posts/seed
-router.post('/seed', (req, res) => {
-  Post.bulkCreate([
-    {
-      title: 'post 1',
-      post_url: 'post1.com',
-      user_id: 1
-    },
-    {
-      title: 'post 2',
-      post_url: 'post2.com',
-      user_id: 1
-    },
-    {
-      title: 'post 3',
-      post_url: 'post3.com',
-      user_id: 2
-    }
-  ])
-    .then((dbPostData) => res.json(dbPostData))
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-});
-
 // PUT /api/posts/upvote
 router.put('/upvote', (req, res) => {
   // custom static method created in models/Post.js
