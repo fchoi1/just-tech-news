@@ -83,7 +83,11 @@ router.get('/:id', (req, res) => {
 
 // POST /api/posts
 router.post('/', (req, res) => {
-  Post.create(req.body)
+  Post.create({
+    user_id: req.session.user_id,
+    title: req.body.title,
+    post_url: req.body.post_url
+  })
     .then((dbPostData) => res.json(dbPostData))
     .catch((err) => {
       res.status(500).json(err);

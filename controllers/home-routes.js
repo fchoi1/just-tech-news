@@ -2,7 +2,10 @@
 const router = require('express').Router();
 const sequelize = require('../config/connection');
 const { Post, User, Comment } = require('../models');
+const withAuth = require('../utils/auth');
 
+// middleware auth function
+router.use(withAuth);
 // From ORM
 // GET /
 router.get('/', (req, res) => {
